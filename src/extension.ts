@@ -3,9 +3,9 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 import * as bingSearch from './bing-search';
+import { serialize } from 'v8';
 
 const bing_search = bingSearch.bing_search
-
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -22,13 +22,54 @@ export function activate(context: vscode.ExtensionContext) {
 				if (clippyPanel)
 					clippyPanel.dispose()
 
-				clippyPanel = clippy(context, text)
+				let helpText = clippySays(text)
+
+				console.log(helpText)
+
+				if (helpText) 
+					clippyPanel = clippy(context, helpText.say, helpText.linkText)
 			}
 		})
 	)
 }
 
-function clippy(context: any, text: string) {
+function clippySays(text:string) {
+	const help_options:Object = {
+		"use": "Looks like you're trying to use hooks!",
+		"for": "Looks like you're trying to write a for loop!",
+		"switch": "Looks like you're trying to write a switch statement!",
+	}
+
+	const words:Array<string> = text.split(" ")
+				
+	// Loop over the selection in reverse and find the first match
+	let searchTerm:any = ''
+
+	for (let i:number = words.length - 1; i >= 0; i--) {
+		console.log(i)
+		if (Object.keys(help_options).indexOf(words[i].toLowerCase()) !== -1) {
+			searchTerm = words[i].toLowerCase()
+			break;
+		}
+	}
+
+	console.log(searchTerm)
+
+	if (!searchTerm)
+		return null
+
+	let linkText = bing_search.generate_link(searchTerm)
+
+	// @ts-ignore
+	let say = `${help_options[searchTerm]}`
+	
+	console.log(linkText)
+	console.log(say)
+
+	return {say, linkText}
+}
+
+function clippy(context: any, text: string, link: string) {
 	// Create and show a new webview
 	const panel = vscode.window.createWebviewPanel(
 	  'clippy', // Identifies the type of the webview. Used internally
@@ -60,7 +101,7 @@ function clippy(context: any, text: string) {
 	const clippy_css = panel.webview.asWebviewUri(clippy_css_on_disk)
 
 	// And set its HTML content
-	panel.webview.html = getWebviewContent(clippy_js, clippy_css, text);
+	panel.webview.html = getWebviewContent(clippy_js, clippy_css, text, link);
 
 	return panel
 }
@@ -68,7 +109,8 @@ function clippy(context: any, text: string) {
 function getWebviewContent(
 	clippy_js:any, 
 	clippy_css:any, 
-	text:string
+	text:string,
+	link:string
 ) {
 	return   `<!DOCTYPE html>
 		<html lang="en">
@@ -85,40 +127,24 @@ function getWebviewContent(
 			<script src="${clippy_js}"></script>
 			<!-- Init script -->
 			<script type="text/javascript">
-				help_options = {
-					"use": "Looks like you're trying to use hooks!",
-					"for": "Looks like you're trying to write a for loop!",
-					"switch": "Looks like you're trying to write a switch statement!",
-				}
-
 				let input = document.querySelector('#name');
 
 				clippy.load('Clippy', function(agent) {
 					agent.animate();
-					speak(agent, input.value);
+					speak(agent, "${text}", "${link}");
 				});
 
-			const speak = (agent, query) => {
-				words = query.split(" ")
-				
-				// Loop over the selection in reverse and find the first match
-				query_output = ''
-				for (let i = words.length - 1; i >= 0; i--) {
-					console.log(i)
-					if (Object.keys(help_options).indexOf(words[i].toLowerCase()) !== -1) {
-						query_output = help_options[words[i].toLowerCase()]
-						break;
-					}
+				const speak = (agent, speech, link) => {
+					agent.speak("Searching...");
+					agent.play('Searching', 5000, () => {
+						agent.speak(speech, true);
+
+						let searchLink = document.createElement('a')
+						searchLink.href = link
+						searchLink.innerHTML = "get help"
+						document.getElementsByClassName('clippy-balloon')[0].appendChild(searchLink)
+					});	
 				}
-
-				if (query_output) {
-					agent.play('Searching');
-
-					// Bing search
-
-					agent.speak(query_output);
-				}
-			}
 			</script>
 		</body>
 		</html>`
