@@ -30,10 +30,12 @@ function getWebviewContent() {
 				<title>Cat Coding</title>
 			</head>
 			<body>
-				<img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" width="300" />
+				<img src="https://media.giphy.com/media/S6O0rSYnsT7TMo32JC/giphy.gif" width="200" />
 			</body>
 			</html>`;
 }
+//   <div class="tenor-gif-embed" data-postid="14148665" data-share-method="host" data-width="100%" data-aspect-ratio="1.0204918032786885"><a href="https://tenor.com/view/bloodbros-microsoft-office-ms-office-clippy-paperclip-gif-14148665">Bloodbros Microsoft Office GIF</a> from <a href="https://tenor.com/search/bloodbros-gifs">Bloodbros GIFs</a></div><script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+// <img src="https://tenor.com/view/bloodbros-microsoft-office-ms-office-clippy-paperclip-gif-14148665" width="300" />
 // this method is called when your extension is deactivated
 function deactivate() { }
 exports.deactivate = deactivate;

@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
 				<title>Cat Coding</title>
 			</head>
 			<body>
-				<img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" width="300" />
+				<img src="https://media.giphy.com/media/S6O0rSYnsT7TMo32JC/giphy.gif" width="200" />
 			</body>
 			</html>`;
   }
