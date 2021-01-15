@@ -17,8 +17,24 @@ export function activate(context: vscode.ExtensionContext) {
 		  vscode.ViewColumn.One, // Editor column to show the new webview panel in.
 		  {} // Webview options. More on these later.
 		);
+		// And set its HTML content
+		panel.webview.html = getWebviewContent();
 	  })
 	);
+  }
+
+  function getWebviewContent() {
+	return `<!DOCTYPE html>
+			<html lang="en">
+			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
+				<title>Cat Coding</title>
+			</head>
+			<body>
+				<img src="https://media.giphy.com/media/JIX9t2j0ZTN9S/giphy.gif" width="300" />
+			</body>
+			</html>`;
   }
 
 // this method is called when your extension is deactivated
