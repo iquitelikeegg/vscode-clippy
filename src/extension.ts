@@ -21,7 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 		// Display a message box to the user
 		// vscode.window.showInformationMessage(bing_search.generate_link('Hello World from Clippy!'));
-		vscode.window.showInformationMessage('Hello World from Clippy!');
+		vscode.window.showInformationMessage('Hello World from Clippy! Random hello');
 	});
 
 	context.subscriptions.push(disposable);
