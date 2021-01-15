@@ -45,26 +45,12 @@ function getWebviewContent(clippy_js, clippy_css) {
   <body>
     <label for="name">Imagine this is the editor</label>
 	<input type="text" id="name" />
-	<button id="test">click me</button>
 
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
     <script src="${clippy_js}"></script>
     <!-- Init script -->
 	<script type="text/javascript">
 		let input = document.querySelector('#name');
-		input.value = 'helo'
-
-		let test = document.querySelector('#test');
-		
-		document.querySelector('#test').addEventListener('click', function(event) {
-			document.querySelector('#name').value = 'yep'
-			// document.getElementsByTagName('body')[0].innerHTML = 'Yes this has changed'
-		});
-
-		// input.addEventListener('hover', function(event) {
-		// 	document.getElementById('test').innerHTML = ''
-		// 	document.getElementsByTagName('body')[0].innerHTML = 'Yes this has changed'
-		// });
 
 		help_options = {
 			"use": "Looks like you're trying to use hooks!",
@@ -75,9 +61,9 @@ function getWebviewContent(clippy_js, clippy_css) {
 		clippy.load('Clippy', function(agent) {
 			agent.animate();
 			input.addEventListener('keypress', (e) => {
-			if (e.code === "Space") {
-				speak(agent, e.target.value);
-			}
+				if (e.code === "Space") {
+					speak(agent, e.target.value);
+				}
 			});
 		});
 
