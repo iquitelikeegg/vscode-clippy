@@ -24,22 +24,20 @@ export function activate(context: vscode.ExtensionContext) {
   }
 
   function getWebviewContent() {
-  return   `
-  <!DOCTYPE html>
+  return   `<!DOCTYPE html>
   <html lang="en">
   <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>Clippy</title>
-      <link rel="stylesheet" type="text/css" href="src/clippy/build/clippy.css" media="all">
+      <link rel="stylesheet" type="text/css" href="clippy/build/clippy.css" media="all">
   </head>
   <body>
     <label for="name">Imagine this is the editor</label>
     <input type="text" id="name">
-    
-    
+
     <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
-    <script src="src/clippy/build/clippy.js"></script>
+    <script src="clippy/build/clippy.js"></script>
     <!-- Init script -->
     <script type="text/javascript">
     const input = document.querySelector('input');
