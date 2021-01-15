@@ -23,13 +23,17 @@ export function activate(context: vscode.ExtensionContext) {
 		const panel = vscode.window.createWebviewPanel(
 		  'clippy', // Identifies the type of the webview. Used internally
 		  'Clippy', // Title of the panel displayed to the user
-		  vscode.ViewColumn.One, // Editor column to show the new webview panel in.
+		  {
+			  viewColumn: vscode.ViewColumn.Beside, // Editor column to show the new webview panel in.
+			  preserveFocus: true
+		  },
 		  {
 			enableScripts: true,
 
 			localResourceRoots: [
 				context.extensionUri
-			]
+			],
+			
 		  } // Webview options. More on these later.
 		);
 
