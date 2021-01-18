@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.bing_search = void 0;
-exports.bing_search = (() => {
+exports.bingSearch = void 0;
+exports.bingSearch = (() => {
     const bingUrl = "https://bing.com/search?q=";
     const msSupportSites = [
         "support.microsoft.com",

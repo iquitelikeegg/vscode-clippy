@@ -1,4 +1,4 @@
-export const bing_search = (() => {
+export const bingSearch = (() => {
     const bingUrl = "https://bing.com/search?q="
     const msSupportSites = [
         "support.microsoft.com",

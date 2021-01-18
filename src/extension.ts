@@ -2,10 +2,10 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import * as path from 'path';
-import * as bingSearch from './bing-search';
+import * as bing_search from './bing-search';
 import { serialize } from 'v8';
 
-const bing_search = bingSearch.bing_search
+const bingSearch = bing_search.bingSearch
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -30,31 +30,56 @@ export function activate(context: vscode.ExtensionContext) {
 	)
 }
 
-function clippySays(text:string) {
-	const help_options:Object = {
-		"for": "Looks like you're trying to write a for loop!",
-		"switch": "Looks like you're trying to write a switch statement!",
+function createHelpText(match:Object) {
+	// @ts-ignore
+	return `It looks like you're trying to use ${match.category}!`;
+}
+
+function resolveCategory(matchTerm:string = "") {
+	const termMap:Object = {
+		"loops": ["for", "while"],
+		"statement": ["switch", "if", "else"],
+		"html": ["html", "body", "div"],
+		"variables": ["const", "let", "var"],
+		"brackets": ["{", "}", "[", "]"],
+		"functions": ["function", "(", ")"],
+		"classes": ["class"],
+		"styles": ["style"]
 	}
 
-	const words:Array<string> = text.split(" ")
-				
-	// Loop over the selection in reverse and find the first match
-	let searchTerm:string = ""
-
-	for (let i:number = words.length - 1; i >= 0; i--) {
-		if (Object.keys(help_options).indexOf(words[i].toLowerCase()) !== -1) {
-			searchTerm = words[i].toLowerCase()
-			break;
+	for (let category in termMap) {
+		// @ts-ignore
+		if (termMap[category].indexOf(matchTerm) !== -1) {
+			return {matchTerm, category}
 		}
 	}
 
-	let linkText = bing_search.generate_link(searchTerm)
+	return {matchTerm, category: ""}
+}
 
-	if (searchTerm === "")
+function clippySays(text:string) {
+	const words:Array<string> = text.split(" ")
+				
+	// Loop over the selection in reverse and find the first match
+	let match:Object = {}
+
+	for (let i:number = words.length - 1; i >= 0; i--) {
+		match = resolveCategory(words[i].toLowerCase())
+		
+		// @ts-ignore
+		if (match.category !== "")
+			break;
+	}
+
+	// @ts-ignore
+	let linkText = bingSearch.generate_link(match.category);
+
+	// @ts-ignore
+	if (match.category === "")
 		return {say: "Unable to find any results", linkText};
 
 	// @ts-ignore
-	let say = `${help_options[searchTerm]}`
+	let say = createHelpText(match)
 
 	return {say, linkText}
 }
