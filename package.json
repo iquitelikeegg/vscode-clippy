@@ -3,6 +3,7 @@
   "displayName": "Clippy",
   "description": "clippy",
   "version": "0.0.1",
+  "publisher": "hats_and_cats",
   "engines": {
     "vscode": "^1.52.0"
   },
