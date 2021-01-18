@@ -23,48 +23,48 @@ function activate(context) {
     }));
 }
 exports.activate = activate;
-function createHelpText(match) {
-    // @ts-ignore
-    return `It looks like you're trying to use ${match.category}!`;
-}
-function resolveCategory(matchTerm = "") {
-    const termMap = {
-        "loops": ["for", "while"],
-        "statement": ["switch", "if", "else"],
-        "html": ["html", "body", "div"],
-        "variables": ["const", "let", "var"],
-        "brackets": ["{", "}", "[", "]"],
-        "functions": ["function", "(", ")"],
-        "classes": ["class"],
-        "styles": ["style"]
-    };
-    for (let category in termMap) {
-        // @ts-ignore
-        if (termMap[category].indexOf(matchTerm) !== -1) {
-            return { matchTerm, category };
-        }
-    }
-    return { matchTerm, category: "" };
-}
-function clippySays(text) {
-    const words = text.split(" ");
-    // Loop over the selection in reverse and find the first match
-    let match = {};
-    for (let i = words.length - 1; i >= 0; i--) {
-        match = resolveCategory(words[i].toLowerCase());
-        // @ts-ignore
-        if (match.category !== "")
-            break;
-    }
-    // @ts-ignore
-    let linkText = bingSearch.generate_link(match.category);
-    // @ts-ignore
-    if (match.category === "")
-        return { say: "Unable to find any results", linkText };
-    // @ts-ignore
-    let say = createHelpText(match);
-    return { say, linkText };
-}
+// function createHelpText(match:Object) {
+// 	// @ts-ignore
+// 	return `It looks like you're trying to use ${match.category}!`;
+// }
+// function resolveCategory(matchTerm:string = "") {
+// 	const termMap:Object = {
+// 		"loops": ["for", "while"],
+// 		"statement": ["switch", "if", "else"],
+// 		"html": ["html", "body", "div"],
+// 		"variables": ["const", "let", "var"],
+// 		"brackets": ["{", "}", "[", "]"],
+// 		"functions": ["function", "(", ")"],
+// 		"classes": ["class"],
+// 		"styles": ["style"]
+// 	}
+// 	for (let category in termMap) {
+// 		// @ts-ignore
+// 		if (termMap[category].indexOf(matchTerm) !== -1) {
+// 			return {matchTerm, category}
+// 		}
+// 	}
+// 	return {matchTerm, category: ""}
+// }
+// function clippySays(text:string) {
+// 	const words:Array<string> = text.split(" ")
+// 	// Loop over the selection in reverse and find the first match
+// 	let match:Object = {}
+// 	for (let i:number = words.length - 1; i >= 0; i--) {
+// 		match = resolveCategory(words[i].toLowerCase())
+// 		// @ts-ignore
+// 		if (match.category !== "")
+// 			break;
+// 	}
+// 	// @ts-ignore
+// 	let linkText = bingSearch.generate_link(match.category);
+// 	// @ts-ignore
+// 	if (match.category === "")
+// 		return {say: "Unable to find any results", linkText};
+// 	// @ts-ignore
+// 	let say = createHelpText(match)
+// 	return {say, linkText}
+// }
 function clippy(context, text, link) {
     // Create and show a new webview
     const panel = vscode.window.createWebviewPanel('clippy', // Identifies the type of the webview. Used internally
@@ -120,9 +120,9 @@ function getWebviewContent(clippy_js, clippy_css, text, link) {
 						document.getElementsByClassName('clippy-balloon')[0].appendChild(searchLink)
 
 						// Hack it sometimes not setting the height of the text box correctly.
-						setTimeout(() => {
-							document.querySelector('.clippy-content').style.height = 'auto';
-						}, 1000)
+						// setTimeout(() => {
+						// 	document.querySelector('.clippy-content').style.height = 'auto';
+						// }, 1000)
 					});	
 				}
 			</script>

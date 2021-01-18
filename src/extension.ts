@@ -30,59 +30,59 @@ export function activate(context: vscode.ExtensionContext) {
 	)
 }
 
-function createHelpText(match:Object) {
-	// @ts-ignore
-	return `It looks like you're trying to use ${match.category}!`;
-}
+// function createHelpText(match:Object) {
+// 	// @ts-ignore
+// 	return `It looks like you're trying to use ${match.category}!`;
+// }
 
-function resolveCategory(matchTerm:string = "") {
-	const termMap:Object = {
-		"loops": ["for", "while"],
-		"statement": ["switch", "if", "else"],
-		"html": ["html", "body", "div"],
-		"variables": ["const", "let", "var"],
-		"brackets": ["{", "}", "[", "]"],
-		"functions": ["function", "(", ")"],
-		"classes": ["class"],
-		"styles": ["style"]
-	}
+// function resolveCategory(matchTerm:string = "") {
+// 	const termMap:Object = {
+// 		"loops": ["for", "while"],
+// 		"statement": ["switch", "if", "else"],
+// 		"html": ["html", "body", "div"],
+// 		"variables": ["const", "let", "var"],
+// 		"brackets": ["{", "}", "[", "]"],
+// 		"functions": ["function", "(", ")"],
+// 		"classes": ["class"],
+// 		"styles": ["style"]
+// 	}
 
-	for (let category in termMap) {
-		// @ts-ignore
-		if (termMap[category].indexOf(matchTerm) !== -1) {
-			return {matchTerm, category}
-		}
-	}
+// 	for (let category in termMap) {
+// 		// @ts-ignore
+// 		if (termMap[category].indexOf(matchTerm) !== -1) {
+// 			return {matchTerm, category}
+// 		}
+// 	}
 
-	return {matchTerm, category: ""}
-}
+// 	return {matchTerm, category: ""}
+// }
 
-function clippySays(text:string) {
-	const words:Array<string> = text.split(" ")
+// function clippySays(text:string) {
+// 	const words:Array<string> = text.split(" ")
 				
-	// Loop over the selection in reverse and find the first match
-	let match:Object = {}
+// 	// Loop over the selection in reverse and find the first match
+// 	let match:Object = {}
 
-	for (let i:number = words.length - 1; i >= 0; i--) {
-		match = resolveCategory(words[i].toLowerCase())
+// 	for (let i:number = words.length - 1; i >= 0; i--) {
+// 		match = resolveCategory(words[i].toLowerCase())
 		
-		// @ts-ignore
-		if (match.category !== "")
-			break;
-	}
+// 		// @ts-ignore
+// 		if (match.category !== "")
+// 			break;
+// 	}
 
-	// @ts-ignore
-	let linkText = bingSearch.generate_link(match.category);
+// 	// @ts-ignore
+// 	let linkText = bingSearch.generate_link(match.category);
 
-	// @ts-ignore
-	if (match.category === "")
-		return {say: "Unable to find any results", linkText};
+// 	// @ts-ignore
+// 	if (match.category === "")
+// 		return {say: "Unable to find any results", linkText};
 
-	// @ts-ignore
-	let say = createHelpText(match)
+// 	// @ts-ignore
+// 	let say = createHelpText(match)
 
-	return {say, linkText}
-}
+// 	return {say, linkText}
+// }
 
 function clippy(context: any, text: string, link: string) {
 	// Create and show a new webview
@@ -158,9 +158,9 @@ function getWebviewContent(
 						document.getElementsByClassName('clippy-balloon')[0].appendChild(searchLink)
 
 						// Hack it sometimes not setting the height of the text box correctly.
-						setTimeout(() => {
-							document.querySelector('.clippy-content').style.height = 'auto';
-						}, 1000)
+						// setTimeout(() => {
+						// 	document.querySelector('.clippy-content').style.height = 'auto';
+						// }, 1000)
 					});	
 				}
 			</script>
