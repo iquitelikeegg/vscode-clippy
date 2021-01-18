@@ -14,7 +14,7 @@ exports.bing_search = (() => {
         "docs.microsoft.com/en-us/windows"
     ];
     let roundRobinPointer = 0;
-    function generate_link(input) {
+    function generate_link(input = "") {
         let queryPrefix = `site:${msSupportSites[roundRobinPointer]} `;
         roundRobinPointer++;
         if (roundRobinPointer > msSupportSites.length - 1)

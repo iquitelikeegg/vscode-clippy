@@ -15,8 +15,6 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.window.onDidChangeTextEditorSelection((event) => {
 			let text = event.textEditor.document.getText(event.selections[0])
-			
-			console.log(text)
 
 			if (text) {
 				if (clippyPanel)
@@ -26,8 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 				console.log(helpText)
 
-				if (helpText) 
-					clippyPanel = clippy(context, helpText.say, helpText.linkText)
+				clippyPanel = clippy(context, helpText.say, helpText.linkText)
 			}
 		})
 	)
@@ -35,7 +32,6 @@ export function activate(context: vscode.ExtensionContext) {
 
 function clippySays(text:string) {
 	const help_options:Object = {
-		"use": "Looks like you're trying to use hooks!",
 		"for": "Looks like you're trying to write a for loop!",
 		"switch": "Looks like you're trying to write a switch statement!",
 	}
@@ -43,28 +39,22 @@ function clippySays(text:string) {
 	const words:Array<string> = text.split(" ")
 				
 	// Loop over the selection in reverse and find the first match
-	let searchTerm:any = ''
+	let searchTerm:string = ""
 
 	for (let i:number = words.length - 1; i >= 0; i--) {
-		console.log(i)
 		if (Object.keys(help_options).indexOf(words[i].toLowerCase()) !== -1) {
 			searchTerm = words[i].toLowerCase()
 			break;
 		}
 	}
 
-	console.log(searchTerm)
-
-	if (!searchTerm)
-		return null
-
 	let linkText = bing_search.generate_link(searchTerm)
+
+	if (searchTerm === "")
+		return {say: "Unable to find any results", linkText};
 
 	// @ts-ignore
 	let say = `${help_options[searchTerm]}`
-	
-	console.log(linkText)
-	console.log(say)
 
 	return {say, linkText}
 }
@@ -121,8 +111,6 @@ function getWebviewContent(
 			<link rel="stylesheet" type="text/css" href="${clippy_css}" media="all">
 		</head>
 		<body>
-			<input type="hidden" id="name" value="${text}"/>
-
 			<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
 			<script src="${clippy_js}"></script>
 			<!-- Init script -->
@@ -141,8 +129,13 @@ function getWebviewContent(
 
 						let searchLink = document.createElement('a')
 						searchLink.href = link
-						searchLink.innerHTML = "get help"
+						searchLink.innerHTML = "get help online"
 						document.getElementsByClassName('clippy-balloon')[0].appendChild(searchLink)
+
+						// Hack it sometimes not setting the height of the text box correctly.
+						setTimeout(() => {
+							document.querySelector('.clippy-content').style.height = 'auto';
+						}, 1000)
 					});	
 				}
 			</script>

@@ -12,7 +12,7 @@ export const bing_search = (() => {
     ]
     let roundRobinPointer = 0
 
-    function generate_link(input:string) {
+    function generate_link(input:string = "") {
         let queryPrefix = `site:${msSupportSites[roundRobinPointer]} `
 
         roundRobinPointer++
